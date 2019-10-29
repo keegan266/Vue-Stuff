@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue Tue</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Shopping Cart</h1>
+    <div id="app">
+        <p v-show="cartItem > 0">Cart Items: {{cartItem}}</p>
+        <p>Item Selected: {{itemSelected}}</p>
+        <div v-for="coffee in coffees">
+            <p @click="updateSelected(coffee.name)">{{coffee.name}}</p>
+            <p>{{coffee.name}} ordered: {{coffee.ordered}}</p>
+            <img v-bind:src = "coffee.imgSrc" v-bind:alt="coffee.name">
+            <button @click="orderThis(coffee)">Order {{coffee.name}}</button>
+            <button @click="removeOrder(coffee)" v-show="coffee.ordered > 0">Remove {{coffee.name}}</button>
+        </div>
+    </div>
+
+    <script>        
+        var app = new Vue({
+            el: '#app',
+            data: {
+                //Array of Objects of our products
+                coffees: [
+                    {name: "Iced Coffee", ordered: 0, imgSrc: "icedcoffee.jpg"},
+                    {name: "Latte", ordered: 0, imgSrc: "latte.jpg"}
+                ],
+                //Keep track of items ordered
+                cartItem: 0,
+                itemSelected: "None Selected"
+            },
+            methods: {
+                updateSelected(theName) {
+                    this.itemSelected = theName;
+                },
+
+                orderThis(theItem) {
+                    theItem.ordered++;
+                    this.cartItem++;
+                    this.itemSelected = theItem.name;
+                },
+
+                removeOrder(theItem) {
+                    theItem.ordered--;
+                    this.cartItem--;
+                    this.itemSelected = theItem.name;
+                }
+            }
+        })
+    </script>
+</body>
+</html>
